@@ -57,7 +57,7 @@
         width="50"
         :index="indexMethod"
       />
-      <el-table-column label="教学任务别称" align="center" width="120" show-overflow-tooltip>
+      <el-table-column label="教学任务别称" align="center" min-width="150" show-overflow-tooltip>
         <template slot-scope="{row}">
           <span>{{ row.teachingTaskAlias }}</span>
         </template>
@@ -209,9 +209,10 @@ export default {
       })
     },
     async selectCourse(row) {
-      const { id, teachingTaskAlias } = row
+      const { id, teachingTaskAlias, term } = row
+      const teaName = row.teacher.teaName
       try {
-        await this.open(`确定选择${teachingTaskAlias}?`)
+        await this.open(`确定选择 ${teaName} 老师的 [${term}]${teachingTaskAlias}?`)
         await axiosPost(SELECT_COURSE, { teachingTaskId: id })
         this.$message.success('选课成功')
         this.getList()
@@ -220,9 +221,10 @@ export default {
       }
     },
     async unselectCourse(row) {
-      const { id, teachingTaskAlias } = row
+      const { id, teachingTaskAlias, term } = row
+      const teaName = row.teacher.teaName
       try {
-        await this.open(`确定退选${teachingTaskAlias}?`)
+        await this.open(`确定退选 ${teaName} 老师的 [${term}]${teachingTaskAlias}?`)
         await axiosPost(UNSELECT_COURSE, { teachingTaskId: id })
         this.$message.success('退选成功')
         this.getList()
